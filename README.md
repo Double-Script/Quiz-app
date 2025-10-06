@@ -1,44 +1,23 @@
-Absolutely! Based on your project, here’s a professional and detailed **README.md** file you can use for GitHub:
 
-```markdown
+---
+
 # Quiz App
 
-A full-stack quiz application built with **React** (frontend), **Spring Boot** (backend), and **MySQL** (database). The app allows users to take quizzes, track attempts, and see their scores in real-time. It is fully containerized using **Docker** and orchestrated with **Docker Compose** for easy deployment.
+A full-stack Quiz application built with **Spring Boot** (backend), **React + Vite** (frontend), and **MySQL** (database). The application is fully Dockerized using **Docker Compose**.
 
 ---
 
 ## Features
 
-- View a list of available quizzes
-- Attempt quizzes with one question displayed at a time
-- Navigate between questions using **Next** and **Previous** buttons
-- Automatic scoring based on correct answers
-- Timer per quiz (1 minute per question)
-- Session-based scoring to track individual quiz attempts
-- Dockerized frontend, backend, and database for seamless deployment
+* Take quizzes with one question displayed at a time
+* Timer per quiz (1 minute per question)
+* Submit answers and get dynamic scoring
+* Session-based tracking for each quiz attempt
+* REST API backend with Spring Boot
+* Frontend with React + Vite
+* Database persistence using MySQL
 
-> Note: CRUD functionality for quizzes and questions was initially included but later removed to match project requirements. The focus is on quiz attempts and scoring.
-
----
-
-## Tech Stack
-
-**Frontend:**  
-- React  
-- Axios for API calls  
-- React Router DOM for navigation  
-- CSS modules for styling  
-
-**Backend:**  
-- Spring Boot  
-- Spring Data JPA  
-- MySQL  
-- RESTful APIs  
-
-**DevOps / Deployment:**  
-- Docker  
-- Docker Compose  
-- Persistent MySQL database volume
+> Note: CRUD operations for quizzes and questions were initially included but removed to match project requirements. The focus is on quiz attempts and scoring.
 
 ---
 
@@ -46,20 +25,13 @@ A full-stack quiz application built with **React** (frontend), **Spring Boot** (
 
 ```
 
-quiz-app/
-├── backend/         # Spring Boot application
-│   ├── src/main/java/com/quizapp
-│   │   ├── controller/
-│   │   ├── entity/
-│   │   ├── repo/
-│   │   └── dto/
-│   └── Dockerfile
-├── frontend/        # React application
-│   ├── src/
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   └── pages/
-│   └── Dockerfile
+Quiz-App/
+├── backend/          # Spring Boot project
+│   ├── Dockerfile
+│   └── target/Quiz-App-1-0.0.1-SNAPSHOT.jar
+├── frontend/         # React + Vite project
+│   ├── Dockerfile
+│   └── package.json
 ├── docker-compose.yml
 └── README.md
 
@@ -67,94 +39,142 @@ quiz-app/
 
 ---
 
-## API Endpoints
+## Prerequisites
 
-### Quiz Endpoints
-- `GET /quiz/getallquiz` - Get all quizzes
-- `GET /quiz/getquizid/{id}` - Get quiz by ID
-- `POST /quiz/save` - Create a new quiz
-- `PUT /quiz/update/{id}` - Update quiz title
-- `DELETE /quiz/delete/{id}` - Delete quiz
-
-### Question Endpoints
-- `GET /question/quizquestions/{id}` - Get questions for a specific quiz
-- `POST /question/submit/{id}` - Submit quiz answers
-- `GET /question/score/{sessionId}` - Get score for a quiz session
+* Docker >= 24
+* Docker Compose >= 2.20
+* (Optional) Postman or a browser for testing APIs
 
 ---
 
-## Installation & Running Locally
+## Docker Setup
 
-### Prerequisites
-- Docker & Docker Compose installed
-- Node.js and npm (for frontend development, optional if using Docker)
+The project uses **three services**:
 
-### Steps
+1. **db** → MySQL database
+2. **backend** → Spring Boot API
+3. **frontend** → React + Vite application
 
-1. Clone the repository:
+---
+
+## Step 1: Clone the project
+
 ```bash
 git clone https://github.com/<your-username>/quiz-app.git
 cd quiz-app
 ````
 
-2. Start the application using Docker Compose:
+---
+
+## Step 2: Docker Compose Build & Up
+
+Run the following command from the root project folder:
 
 ```bash
 docker-compose up --build
 ```
 
-3. Access the application:
-
-* Frontend: `http://localhost:5173`
-* Backend: `http://localhost:8080`
-
-> MySQL database is accessible at `localhost:3306` with username `root` and password `Veeruved18`.
+* This will build **backend** and **frontend** images and start all three services.
+* The first time may take a few minutes.
 
 ---
 
-## Usage
+## Step 3: Access the services
 
-1. Open the frontend in your browser.
-2. View the available quizzes on the home page.
-3. Click on a quiz to start it.
-4. Navigate through questions using **Next** and **Previous**.
-5. Complete the quiz before the timer ends.
-6. View your score on the results screen.
+| Service          | URL                                                                            | Notes                                                  |
+| ---------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------ |
+| Frontend         | [http://localhost:5173](http://localhost:5173)                                 | React app                                              |
+| Backend API      | [http://localhost:8080/quiz/getallquiz](http://localhost:8080/quiz/getallquiz) | Spring Boot REST API                                   |
+| Database (MySQL) | 127.0.0.1:3306                                                                 | Use MySQL client/Postman; root password = `Veeruved18` |
 
 ---
 
-## Screenshots
+## Step 4: React Frontend API Configuration
 
-*(Optional: Add screenshots of your app here to make your README visually appealing)*
+* Frontend communicates with backend via environment variable:
+
+```env
+# frontend/.env
+VITE_API_URL=http://localhost:8080
+```
+
+* In code:
+
+```js
+fetch(`${import.meta.env.VITE_API_URL}/quiz/getallquiz`)
+```
+
+> This ensures the frontend works correctly when accessed from your browser outside Docker.
+
+---
+
+## Step 5: Stopping the project
+
+```bash
+docker-compose down
+```
+
+* Stops and removes containers
+* Use `docker-compose down -v` to also remove volumes (database data)
 
 ---
 
 ## Notes
 
-* Timer is implemented with 1 minute per question.
-* Each quiz attempt is tracked using a unique `QuizSession`.
-* Backend logs detailed info for submissions and scoring for debugging purposes.
+* **Database Credentials** in `docker-compose.yml`:
+
+```yaml
+environment:
+  MYSQL_ROOT_PASSWORD: Veeruved18
+  MYSQL_DATABASE: quizdb
+```
+
+* Spring Boot `application.properties` for Docker:
+
+```properties
+spring.datasource.url=jdbc:mysql://db:3306/quizdb?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=Veeruved18
+server.address=0.0.0.0
+server.port=8080
+```
+## 🧱 Database Credentials
+
+| Key      | Value      |
+| -------- | ---------- |
+| Database | empdb      |
+| Username | root       |
+| Password | Veeruved18 |
+
+Database data is persisted using the Docker volume `db_data`.
 
 ---
 
-## License
+## 🧹 Step 4: Stop the Containers
 
-This project is open-source and available under the MIT License.
+```bash
+docker-compose down
+```
 
----
+To remove all data (including database):
 
-## Author
-
-**[Your Name]**
-
-* GitHub: [https://github.com/<your-username>](https://github.com/<your-username>)
-* LinkedIn: [https://www.linkedin.com/in/<your-linkedin>](https://www.linkedin.com/in/<your-linkedin>)
-
+```bash
+docker-compose down -v
 ```
 
 ---
 
-If you want, I can also **enhance it with badges, live demo section, and Docker commands section** so it looks professional and ready to impress recruiters.  
+## 🧑‍💻 Author
 
-Do you want me to do that?
-```
+**Vedantraj K Patil**
+📧 Email: [patilvedantraj@gmail.com](mailto:patilvedantraj@gmail.com)
+
+---
+
+## 🏁 Summary
+
+This project demonstrates a complete **Full Stack CRUD system** using
+**Spring Boot**, **React**, and **MySQL**, all running seamlessly with **Docker Compose**.
+It’s a simple and clean example of how modern web applications can be structured and deployed.
+
+---
