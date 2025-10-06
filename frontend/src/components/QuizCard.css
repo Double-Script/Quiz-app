@@ -1,0 +1,71 @@
+.quiz-card {
+  position: relative;
+  width: 320px;
+  min-height: 220px;
+  border-radius: 18px;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  margin: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quiz-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+}
+
+.quiz-title {
+  margin: 2rem 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  word-break: break-word;
+}
+
+.start-btn {
+  padding: 0.7rem 1.6rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.start-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: scale(1.05);
+}
+
+.card-icons {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  gap: 0.8rem;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #334155;
+  transition: transform 0.2s, color 0.2s;
+  
+}
+
+.edit-icon:hover {
+  color: #2563eb;
+  transform: scale(1.2);
+}
+
+.delete-icon:hover {
+  color: #dc2626;
+  transform: scale(1.2);
+}

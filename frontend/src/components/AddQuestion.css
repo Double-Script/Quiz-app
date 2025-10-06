@@ -1,0 +1,75 @@
+.add-question-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #f9fafb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.add-question-container h2 {
+  margin-bottom: 1.5rem;
+  color: #1e3a8a;
+}
+
+.add-question-container input,
+.add-question-container select {
+  width: 100%;
+  padding: 0.7rem;
+  margin-bottom: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.add-question-container input:focus,
+.add-question-container select:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.add-question-container .submit-btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.add-question-container .submit-btn:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.add-question-container .message {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #16a34a;
+}
+
+.back-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn {
+  background-color: #f3f4f6;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.back-btn:hover {
+  background-color: #e5e7eb;
+  transform: translateY(-1px);
+}
